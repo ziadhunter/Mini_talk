@@ -1,19 +1,28 @@
 NAMESRV = server
 NAMECLN = client
+NAMEBSRV = server_bonus
+NAMEBCLN = client_bonus
 PRINTF = printf/libftprintf.a
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-FILESRV = server.c
-FILECLN = client.c
-# FILECLN = client.c
-# FILES_BNS = 
+FILESRV = mandatory/server.c
+FILECLN = mandatory/client.c
+FILEBCLN = bonus/client_bonus.c
+FILEBSRV = bonus/server_bonus.c
+
 
 OBJSRV =${FILESRV:%.c=%.o}
 OBJCLN = ${FILECLN:%.c=%.o}
-# OBJ_BN =${FILES_BNS:%.c=%.o}
+
+
+OBJBSRV = ${FILEBSRV:%.c=%.o}
+OBJBCLN = ${FILEBCLN:%.c=%.o}
+
 
 
 all: $(NAMESRV) $(NAMECLN)
+
+bonus: $(NAMEBSRV) $(NAMEBCLN)
 
 $(PRINTF) :
 	make -C printf
@@ -24,21 +33,30 @@ $(NAMESRV):${OBJSRV} $(PRINTF)
 $(NAMECLN):${OBJCLN} $(PRINTF) 
 	$(CC) $(CFLAGS) $(OBJCLN) printf/libftprintf.a -o $(NAMECLN)
 
+$(NAMEBSRV):${OBJBSRV} $(PRINTF) 
+	$(CC) $(CFLAGS) $(OBJBSRV) printf/libftprintf.a -o $(NAMEBSRV)
 
-# bonus:${OBJ_BN}
-# 	$(AR) ${NAME} $^
+$(NAMEBCLN):${OBJBCLN} $(PRINTF) 
+	$(CC) $(CFLAGS) $(OBJBCLN) printf/libftprintf.a -o $(NAMEBCLN)
 
 %.o : %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean: 
 	rm -f ${OBJSRV}
+	rm -f ${OBJCLN}
+	rm -f ${OBJBSRV}
+	rm -f ${OBJBCLN}
 	make clean -C printf
 
 fclean: clean
 	rm -f $(NAMESRV)
+	rm -f $(NAMECLN)
+	rm -f $(NAMEBSRV)
+	rm -f $(NAMEBCLN)
 	make fclean -C printf
 
 re : fclean all
 
 .PHONY     : clean re all fclean bonus
+.SECONDARY:

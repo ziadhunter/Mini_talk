@@ -20,3 +20,4 @@ fclean: clean
 re : fclean all
 
 .PHONY     : clean re all fclean bonus
+.SECONDARY:
